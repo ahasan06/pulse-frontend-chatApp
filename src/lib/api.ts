@@ -54,8 +54,12 @@ export const chatApi = {
 
   searchUsers(q: string) {
     return http
-      .get<User[]>('/users/search', { params: { q } })
-      .then((res) => res.data)
+      .get<User[]>(`/users/search?q=${encodeURIComponent(q)}`)
+      .then((res) => res.data ?? [])
+  },
+
+  listUsers() {
+    return http.get<User[]>('/users/search').then((res) => res.data ?? [])
   },
 
   listConversations() {

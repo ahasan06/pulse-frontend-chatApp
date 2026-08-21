@@ -33,6 +33,13 @@ export function toApiError(error: unknown) {
   return new ApiError('Something went wrong')
 }
 
+function friendlyMessage(message: string) {
+  if (/regular expression is invalid/i.test(message)) {
+    return 'No users found. Try a name, or a number like 017... or 880...'
+  }
+  return message
+}
+
 export function getErrorMessage(error: unknown, fallback = 'Something went wrong') {
-  return toApiError(error).message || fallback
+  return friendlyMessage(toApiError(error).message || fallback)
 }

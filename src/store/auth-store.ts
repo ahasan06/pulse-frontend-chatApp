@@ -46,5 +46,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout() {
     clearToken()
     set({ user: null, token: null, status: 'ready' })
+    window.dispatchEvent(new Event('auth:logout'))
   },
 }))
