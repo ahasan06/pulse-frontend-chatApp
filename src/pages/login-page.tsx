@@ -3,27 +3,12 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { Navigate } from 'react-router-dom'
-import { z } from 'zod'
 import { Button } from '../components/ui/button'
+import { Field } from '../components/ui/field'
 import { Input } from '../components/ui/input'
 import { getErrorMessage } from '../lib/api-error'
+import { loginSchema, type LoginFormValues } from '../schemas/auth'
 import { useAuthStore } from '../store/auth-store'
-
-const loginSchema = z.object({
-  phone: z
-    .string()
-    .trim()
-    .transform((value) => {
-      const compact = value.replace(/[\s-]/g, '')
-      return compact.startsWith('+') ? compact : `+${compact}`
-    })
-    .refine((value) => /^\+[1-9]\d{6,14}$/.test(value), {
-      message: 'Use international format, e.g. +15551234567',
-    }),
-  name: z.string().trim().min(2, 'Name must be at least 2 characters'),
-})
-
-type LoginFormValues = z.infer<typeof loginSchema>
 
 export function LoginPage() {
   const token = useAuthStore((state) => state.token)
@@ -57,19 +42,20 @@ export function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-svh items-center justify-center bg-slate-950 px-4 text-slate-100">
-      <section className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/70 p-8 shadow-2xl">
-        <HiOutlineChatBubbleLeftRight className="h-10 w-10 text-emerald-400" />
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+    <main className="flex min-h-svh items-center justify-center bg-slate-50 px-4 py-8 dark:bg-slate-950">
+      <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 dark:border-slate-800 dark:bg-slate-900">
+        <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white">
+          <HiOutlineChatBubbleLeftRight className="h-6 w-6" />
+        </span>
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
           Sign in to Pulse
         </h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-slate-500">
           Enter your phone and name. New numbers are registered automatically.
         </p>
 
         <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <label className="block space-y-1.5">
-            <span className="text-sm font-medium text-slate-300">Phone</span>
+          <Field label="Phone" error={errors.phone?.message}>
             <Input
               type="tel"
               autoComplete="tel"
@@ -77,13 +63,9 @@ export function LoginPage() {
               invalid={Boolean(errors.phone)}
               {...register('phone')}
             />
-            {errors.phone ? (
-              <span className="text-xs text-red-400">{errors.phone.message}</span>
-            ) : null}
-          </label>
+          </Field>
 
-          <label className="block space-y-1.5">
-            <span className="text-sm font-medium text-slate-300">Name</span>
+          <Field label="Name" error={errors.name?.message}>
             <Input
               type="text"
               autoComplete="name"
@@ -91,13 +73,10 @@ export function LoginPage() {
               invalid={Boolean(errors.name)}
               {...register('name')}
             />
-            {errors.name ? (
-              <span className="text-xs text-red-400">{errors.name.message}</span>
-            ) : null}
-          </label>
+          </Field>
 
           {serverError ? (
-            <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
               {serverError}
             </p>
           ) : null}

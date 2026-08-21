@@ -1,12 +1,144 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
   min-height: 100svh;
-  background: #020617;
+  overflow-x: hidden;
+  background: #f8fafc;
+  color: #0f172a;
   font-family:
     "Segoe UI",
     system-ui,
     -apple-system,
     sans-serif;
+}
+
+html.dark body {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+button:not(:disabled),
+[type="button"]:not(:disabled),
+[type="submit"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+[type="button"]:disabled,
+[type="submit"]:disabled,
+[type="reset"]:disabled {
+  cursor: not-allowed;
+}
+
+.chat-wallpaper {
+  background-color: #efeae2;
+}
+
+.chat-wallpaper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/chat-doodle.svg");
+  background-size: 360px 360px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+html.dark .chat-wallpaper {
+  background-color: #0b141a;
+}
+
+html.dark .chat-wallpaper::before {
+  filter: invert(1);
+  opacity: 0.035;
+}
+
+.msg-tail-out::before,
+.msg-tail-in::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 13px;
+}
+
+.msg-tail-out::before {
+  right: -8px;
+  background: #d9fdd3;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.msg-tail-in::before {
+  left: -8px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+html.dark .msg-tail-out::before {
+  background: #005c4b;
+}
+
+html.dark .msg-tail-in::before {
+  background: #202c33;
+}
+
+@keyframes ai-shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes ai-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15) rotate(18deg);
+  }
+}
+
+.ai-refining-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 15%,
+    rgb(255 255 255 / 0.7) 48%,
+    transparent 80%
+  );
+  animation: ai-shimmer 1.6s ease-in-out infinite;
+}
+
+html.dark .ai-refining-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 15%,
+    rgb(255 255 255 / 0.12) 48%,
+    transparent 80%
+  );
+}
+
+.ai-sparkle {
+  position: absolute;
+  color: #6366f1;
+  animation: ai-twinkle 1.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+html.dark .ai-sparkle {
+  color: #a5b4fc;
 }
