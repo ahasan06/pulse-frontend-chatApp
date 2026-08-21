@@ -1,37 +1,45 @@
-import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
-import { Button } from '../components/ui/button'
-import { useAuthStore } from '../store/auth-store'
+import { useEffect, useState } from 'react'
+import { useChatSocket } from '../hooks/use-chat-socket'
+import { NewChatDialog } from '../components/dialogs/new-chat-dialog'
+import { NewGroupDialog } from '../components/dialogs/new-group-dialog'
+import { ChatShell } from '../components/layout/chat-shell'
+import type { SideNavView } from '../components/layout/side-nav'
+import { useChatStore } from '../store/chat-store'
 
 export function ChatPage() {
-  const user = useAuthStore((state) => state.user)
-  const logout = useAuthStore((state) => state.logout)
+  const loadConversations = useChatStore((state) => state.loadConversations)
+  const [newChatOpen, setNewChatOpen] = useState(false)
+  const [newGroupOpen, setNewGroupOpen] = useState(false)
+  const [view, setView] = useState<SideNavView>('chats')
+
+  useChatSocket()
+
+  useEffect(() => {
+    void loadConversations()
+
+    function onLogout() {
+      useChatStore.getState().reset()
+    }
+
+    window.addEventListener('auth:logout', onLogout)
+    return () => {
+      window.removeEventListener('auth:logout', onLogout)
+    }
+  }, [loadConversations])
 
   return (
-    <main className="flex min-h-svh flex-col bg-slate-950 text-slate-100">
-      <header className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
-        <div className="flex items-center gap-3">
-          <HiOutlineChatBubbleLeftRight className="h-6 w-6 text-emerald-400" />
-          <div>
-            <p className="text-sm font-medium">Pulse</p>
-            <p className="text-xs text-slate-400">
-              Signed in as {user?.name} · {user?.phone}
-            </p>
-          </div>
-        </div>
-        <Button variant="ghost" onClick={logout}>
-          Log out
-        </Button>
-      </header>
-
-      <section className="flex flex-1 items-center justify-center px-6 text-center">
-        <div>
-          <h1 className="text-xl font-semibold">Inbox comes next</h1>
-          <p className="mt-2 max-w-md text-sm text-slate-400">
-            Login and the API layer are in place. Next we add conversations,
-            groups, and the chat panel.
-          </p>
-        </div>
-      </section>
-    </main>
+    <>
+      <ChatShell
+        view={view}
+        onViewChange={setView}
+        onNewChat={() => setNewChatOpen(true)}
+        onNewGroup={() => setNewGroupOpen(true)}
+      />
+      <NewChatDialog open={newChatOpen} onClose={() => setNewChatOpen(false)} />
+      <NewGroupDialog
+        open={newGroupOpen}
+        onClose={() => setNewGroupOpen(false)}
+      />
+    </>
   )
 }
