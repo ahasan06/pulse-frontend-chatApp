@@ -167,7 +167,7 @@ Search other users (and yourself) by name or phone.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `q` | string | yes | Name or phone fragment |
+| `q` | string | documented as required | Name or phone fragment. **Live quirk:** omitting `q` (or sending empty) still returns `200` with a default list of about **50 users**. That is how the app’s “All members” view is loaded. |
 
 **Response `200`** — a bare array, not wrapped in `{ data }`.
 
@@ -461,7 +461,7 @@ An invalid or missing token is rejected.
 | Direction | Event | Payload |
 | --- | --- | --- |
 | client → server | `message:send` | `{ conversationId, text }` — optional ack callback |
-| server → client | `message:new` | a new message for you (**inferred:** same shape as REST `POST /messages`) |
+| server → client | `message:new` | Live payload uses `id` (not `_id`) and numeric `createdAt` (epoch ms). REST `POST /messages` still returns `_id` + ISO date. Normalize before storing. |
 | server → client | `conversation:updated` | a group you are in changed — created, renamed, or members/admins changed |
 
 Sending via REST still fans out `message:new`. The UI should append from the socket (and de-dupe by `_id` if it also used the REST response).
@@ -491,8 +491,9 @@ These are the shapes the UI must not collapse into one type:
 | Direct `participant` vs group `participants` | Discriminate on `type` |
 | Empty `lastMessage: {}` | Treat as “no preview” |
 | Search returns the current user | Client-side filter |
+| `GET /users/search` with no `q` returns ~50 users | Used for the All members (globe) view |
 | Create-conversation vs list-conversation participant shapes | Normalize in the API layer |
-| Swagger omits status codes | Treat `200` as success for the inspected happy paths; surface `error.message` on failures |
+| Socket `message:new` uses `id` + epoch `createdAt`; REST uses `_id` + ISO | Normalize in one helper before the store |
 
 ---
 
