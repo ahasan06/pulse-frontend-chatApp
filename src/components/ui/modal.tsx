@@ -20,7 +20,7 @@ export function Modal({ open, title, onClose, children, footer }: ModalProps) {
         aria-label="Close dialog"
         onClick={onClose}
       />
-      <div className="relative z-10 flex max-h-[92svh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-xl sm:rounded-2xl dark:bg-slate-950">
+      <div className="relative z-10 flex max-h-[92svh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-xl sm:rounded-2xl dark:bg-mz-surface">
         <header className="flex items-center justify-between border-b border-slate-100 px-4 py-3 sm:px-5 sm:py-4 dark:border-slate-800">
           <h2 className="min-w-0 truncate text-base font-semibold text-slate-900 dark:text-slate-100">
             {title}

@@ -58,7 +58,7 @@ export function InboxPanel({
   )
 
   return (
-    <aside className="flex h-full w-full min-w-0 flex-col border-r border-slate-200 bg-white md:w-80 lg:w-[22rem] xl:w-[380px] dark:border-slate-800 dark:bg-slate-950">
+    <aside className="flex h-full w-full min-w-0 flex-col border-r border-slate-200 bg-white md:w-80 lg:w-[22rem] xl:w-[380px] dark:border-mz-border dark:bg-mz-page">
       <MobileListHeader
         onViewChange={onViewChange}
         onOpenNav={onOpenNav}
@@ -88,7 +88,7 @@ export function InboxPanel({
           <Button
             size="sm"
             variant="ghost"
-            className="w-full min-w-0 rounded-full border-blue-200 px-2 text-xs text-blue-700 hover:bg-blue-50 sm:px-3 sm:text-sm"
+            className="w-full min-w-0 rounded-full border-mz-accent/30 px-2 text-xs text-mz-accent-deep hover:bg-mz-out sm:px-3 sm:text-sm"
             onClick={onNewGroup}
           >
             + New group

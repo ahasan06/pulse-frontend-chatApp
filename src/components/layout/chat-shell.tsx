@@ -48,7 +48,7 @@ export function ChatShell({
   }
 
   return (
-    <div className="flex h-svh overflow-hidden bg-[#eef3f8] dark:bg-slate-900">
+    <div className="flex h-svh overflow-hidden bg-[#eef0f8] dark:bg-mz-page">
       <div className="hidden h-full shrink-0 lg:flex">
         <SideNav view={view} onViewChange={onViewChange} />
       </div>

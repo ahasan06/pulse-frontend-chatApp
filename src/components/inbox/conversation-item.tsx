@@ -102,7 +102,7 @@ export function ConversationItem({
       ref={rootRef}
       className={cn(
         'relative flex w-full items-center gap-3 rounded-2xl px-3 py-3 transition',
-        active ? 'bg-blue-50 dark:bg-blue-950/60' : 'hover:bg-slate-50 dark:hover:bg-slate-900',
+        active ? 'bg-mz-out dark:bg-mz-accent/15' : 'hover:bg-slate-50 dark:hover:bg-mz-elevated',
       )}
     >
       <button
@@ -113,7 +113,7 @@ export function ConversationItem({
         <div className="relative">
           <Avatar name={title} />
           {isGroup ? (
-            <span className="absolute -bottom-0.5 -right-0.5 rounded-full bg-white p-0.5 text-blue-600 dark:bg-slate-950">
+            <span className="absolute -bottom-0.5 -right-0.5 rounded-full bg-white p-0.5 text-mz-accent dark:bg-mz-page">
               <HiOutlineUserGroup className="h-3.5 w-3.5" />
             </span>
           ) : null}
@@ -131,7 +131,7 @@ export function ConversationItem({
             <p className="truncate text-sm text-slate-500">{preview}</p>
             <div className="flex shrink-0 items-center gap-0.5">
               {unread > 0 ? (
-                <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-blue-600 px-1.5 text-[11px] font-semibold text-white">
+                <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-mz-accent px-1.5 text-[11px] font-semibold text-white">
                   {unread}
                 </span>
               ) : null}

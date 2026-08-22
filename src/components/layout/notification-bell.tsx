@@ -75,7 +75,7 @@ export function NotificationBell({
             {count > 0 ? (
               <button
                 type="button"
-                className="text-xs font-medium text-blue-600 hover:underline"
+                className="text-xs font-medium text-mz-accent hover:underline"
                 onClick={markAllRead}
               >
                 Mark all read

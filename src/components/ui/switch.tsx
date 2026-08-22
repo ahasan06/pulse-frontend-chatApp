@@ -49,7 +49,7 @@ export function Switch({
         <span
           className={cn(
             'relative h-5 w-9 shrink-0 rounded-full transition',
-            checked ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-600',
+            checked ? 'bg-mz-accent' : 'bg-slate-300 dark:bg-slate-600',
           )}
         >
           <span

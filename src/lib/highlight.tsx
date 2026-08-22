@@ -13,7 +13,7 @@ export function highlightText(text: string, query: string): ReactNode {
     part.toLowerCase() === needle.toLowerCase() ? (
       <mark
         key={`${part}-${index}`}
-        className="rounded-sm bg-blue-200 text-slate-900 dark:bg-blue-500/50 dark:text-slate-50"
+        className="rounded-sm bg-mz-out text-slate-900 dark:bg-mz-accent/50 dark:text-slate-50"
       >
         {part}
       </mark>

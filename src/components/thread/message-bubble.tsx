@@ -48,7 +48,7 @@ function SendStatus({
 
   return (
     <IoCheckmarkDone
-      className="h-4 w-4 text-[#53bdeb]"
+      className="h-4 w-4 text-mz-accent"
       title="Sent"
       aria-label="Sent"
     />
@@ -218,12 +218,12 @@ export function MessageBubble({
         className={cn(
           'relative min-w-0 max-w-[min(100%,calc(100%-2.25rem))] px-2.5 py-1.5 shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] sm:max-w-[80%] sm:px-3 lg:max-w-[72%]',
           mine
-            ? 'msg-tail-out rounded-lg rounded-tr-none bg-[#d9fdd3] text-slate-900 dark:bg-[#005c4b] dark:text-slate-50'
-            : 'msg-tail-in rounded-lg rounded-tl-none bg-white text-slate-800 dark:bg-[#202c33] dark:text-slate-100',
+            ? 'msg-tail-out rounded-lg rounded-tr-none bg-mz-out text-slate-900 dark:bg-mz-out-dark dark:text-slate-50'
+            : 'msg-tail-in rounded-lg rounded-tl-none bg-white text-slate-800 dark:bg-mz-elevated dark:text-slate-100',
         )}
       >
         {!mine && conversation.type === 'group' ? (
-          <p className="mb-0.5 text-xs font-semibold text-[#00a884]">{senderName}</p>
+          <p className="mb-0.5 text-xs font-semibold text-mz-accent">{senderName}</p>
         ) : null}
         <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
           {displayText}

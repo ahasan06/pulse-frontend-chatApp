@@ -108,7 +108,7 @@ export function NewGroupDialog({ open, onClose }: NewGroupDialogProps) {
             <button
               key={member._id}
               type="button"
-              className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
+              className="rounded-full bg-mz-out px-3 py-1 text-xs font-medium text-mz-accent-deep"
               onClick={() => toggleMember(member)}
             >
               {member.name} ×

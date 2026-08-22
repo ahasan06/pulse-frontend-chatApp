@@ -111,7 +111,7 @@ export function ThreadPanel({ onBack }: ThreadPanelProps) {
 
   return (
     <section className="relative flex h-full min-w-0 flex-1">
-      <div className="flex min-w-0 flex-1 flex-col bg-[#efeae2] dark:bg-[#0b141a]">
+      <div className="flex min-w-0 flex-1 flex-col bg-[#eef0f8] dark:bg-mz-page">
         <ThreadHeader
           conversation={conversation}
           onBack={onBack}
@@ -167,7 +167,7 @@ export function ThreadPanel({ onBack }: ThreadPanelProps) {
               >
                 {showDay ? (
                   <div className="mb-3 flex justify-center pt-2">
-                    <span className="rounded-full bg-[#e1f2fa] px-3 py-1 text-xs font-medium text-slate-600 shadow-sm dark:bg-[#182229] dark:text-slate-300">
+                    <span className="rounded-full bg-mz-out px-3 py-1 text-xs font-medium text-mz-accent-deep shadow-sm dark:bg-mz-elevated dark:text-slate-300">
                       {formatDayLabel(message.createdAt)}
                     </span>
                   </div>
@@ -185,7 +185,7 @@ export function ThreadPanel({ onBack }: ThreadPanelProps) {
           {showJump && status === 'ready' && messages.length > 0 ? (
             <button
               type="button"
-              className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-[#00a884] px-3 py-1 text-xs font-medium text-white shadow-md"
+              className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-mz-accent px-3 py-1 text-xs font-medium text-white shadow-md"
               onClick={scrollToBottom}
             >
               New messages

@@ -69,7 +69,7 @@ export function UserSearchResults({
                 <span className="text-xs text-slate-500">{user.phone}</span>
               </span>
               {selected ? (
-                <span className="text-xs font-medium text-blue-600">Added</span>
+                <span className="text-xs font-medium text-mz-accent">Added</span>
               ) : null}
             </button>
           </li>

@@ -1,6 +1,32 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme inline {
+  --color-mz-page: #0a0a12;
+  --color-mz-surface: #111120;
+  --color-mz-elevated: #1a1a2e;
+  --color-mz-border: #2a2a42;
+  --color-mz-accent: #3b82f6;
+  --color-mz-accent-deep: #2563eb;
+  --color-mz-muted: #9494b8;
+  --color-mz-out: #dbeafe;
+  --color-mz-out-dark: #1d4ed8;
+  --animate-aurora: aurora 60s linear infinite;
+}
+
+@keyframes aurora {
+  from {
+    background-position:
+      50% 50%,
+      50% 50%;
+  }
+  to {
+    background-position:
+      350% 50%,
+      350% 50%;
+  }
+}
+
 html {
   overflow-x: hidden;
 }
@@ -9,8 +35,8 @@ body {
   margin: 0;
   min-height: 100svh;
   overflow-x: hidden;
-  background: #f8fafc;
-  color: #0f172a;
+  background: #f4f5fb;
+  color: #0a0a12;
   font-family:
     "Segoe UI",
     system-ui,
@@ -19,8 +45,43 @@ body {
 }
 
 html.dark body {
-  background: #0f172a;
-  color: #e2e8f0;
+  background: #0a0a12;
+  color: #e8e8f4;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c5c5d6 transparent;
+}
+
+html.dark * {
+  scrollbar-color: #3a3a55 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #c5c5d6;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #9a9ab3;
+}
+
+html.dark *::-webkit-scrollbar-thumb {
+  background: #3a3a55;
+}
+
+html.dark *::-webkit-scrollbar-thumb:hover {
+  background: #52527a;
 }
 
 button:not(:disabled),
@@ -39,7 +100,7 @@ button:disabled,
 }
 
 .chat-wallpaper {
-  background-color: #efeae2;
+  background-color: #eef0f8;
 }
 
 .chat-wallpaper::before {
@@ -53,7 +114,7 @@ button:disabled,
 }
 
 html.dark .chat-wallpaper {
-  background-color: #0b141a;
+  background-color: #0a0a12;
 }
 
 html.dark .chat-wallpaper::before {
@@ -72,7 +133,7 @@ html.dark .chat-wallpaper::before {
 
 .msg-tail-out::before {
   right: -8px;
-  background: #d9fdd3;
+  background: #dbeafe;
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
@@ -83,11 +144,11 @@ html.dark .chat-wallpaper::before {
 }
 
 html.dark .msg-tail-out::before {
-  background: #005c4b;
+  background: #1d4ed8;
 }
 
 html.dark .msg-tail-in::before {
-  background: #202c33;
+  background: #1a1a2e;
 }
 
 @keyframes ai-shimmer {

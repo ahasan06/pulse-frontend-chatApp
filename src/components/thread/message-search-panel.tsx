@@ -55,7 +55,7 @@ export function MessageSearchPanel({
   const matchCount = groups.reduce((sum, group) => sum + group.messages.length, 0)
 
   return (
-    <aside className="flex h-full w-full min-w-0 shrink-0 flex-col border-l border-slate-200 bg-white max-lg:absolute max-lg:inset-0 max-lg:z-30 lg:w-96 dark:border-slate-800 dark:bg-slate-950">
+    <aside className="flex h-full w-full min-w-0 shrink-0 flex-col border-l border-slate-200 bg-white max-lg:absolute max-lg:inset-0 max-lg:z-30 lg:w-96 dark:border-mz-border dark:bg-mz-page">
       <header className="flex items-center gap-2 border-b border-slate-200 px-3 py-3 dark:border-slate-800">
         <IconButton label="Close search" onClick={onClose}>
           <HiXMark className="h-5 w-5" />

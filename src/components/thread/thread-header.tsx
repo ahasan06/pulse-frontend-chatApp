@@ -25,7 +25,7 @@ export function ThreadHeader({ conversation, onBack, onSearch }: ThreadHeaderPro
   const isGroup = conversation.type === 'group'
 
   return (
-    <header className="relative flex items-center gap-2 border-b border-black/5 bg-[#f0f2f5] px-2 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] sm:gap-3 sm:px-3 sm:py-2.5 md:px-5 dark:border-white/5 dark:bg-[#202c33]">
+    <header className="relative flex items-center gap-2 border-b border-mz-border/20 bg-[#eef0f8] px-2 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] sm:gap-3 sm:px-3 sm:py-2.5 md:px-5 dark:border-mz-border dark:bg-mz-surface">
       <IconButton
         label="Back to chats"
         className="text-slate-600 md:hidden dark:text-slate-300 dark:hover:bg-white/5"

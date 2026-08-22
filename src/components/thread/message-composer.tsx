@@ -97,7 +97,7 @@ export function MessageComposer({ onSend }: MessageComposerProps) {
 
   return (
     <form
-      className="shrink-0 border-t border-black/5 bg-[#f0f2f5] p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:p-3 dark:border-white/5 dark:bg-[#202c33]"
+      className="shrink-0 border-t border-mz-border/20 bg-[#eef0f8] p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:p-3 dark:border-mz-border dark:bg-mz-surface"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
@@ -106,7 +106,7 @@ export function MessageComposer({ onSend }: MessageComposerProps) {
           'relative flex items-end gap-2 rounded-[24px] px-2 py-1 shadow-sm',
           refining
             ? 'bg-indigo-50 ring-1 ring-indigo-200 dark:bg-indigo-950/50 dark:ring-indigo-800'
-            : 'bg-white dark:bg-[#2a3942]',
+            : 'bg-white dark:bg-mz-elevated',
         )}
         aria-busy={refining}
       >
@@ -171,7 +171,7 @@ export function MessageComposer({ onSend }: MessageComposerProps) {
         {showAiButton ? (
           <IconButton
             label={refining ? 'AI is refining' : 'Fix with AI'}
-            className="h-10 w-10 shrink-0 rounded-full bg-blue-600 text-white hover:bg-blue-700 hover:text-white"
+            className="h-10 w-10 shrink-0 rounded-full bg-mz-accent text-white hover:bg-mz-accent-deep hover:text-white"
             disabled={refining}
             onClick={() => void runAiRefine()}
           >
@@ -184,7 +184,7 @@ export function MessageComposer({ onSend }: MessageComposerProps) {
         ) : (
           <IconButton
             label="Send"
-            className="h-10 w-10 shrink-0 rounded-full bg-[#00a884] text-white hover:bg-[#008f72] hover:text-white"
+            className="h-10 w-10 shrink-0 rounded-full bg-mz-accent-deep text-white hover:bg-mz-accent hover:text-white"
             disabled={sending || refining}
             type="submit"
           >

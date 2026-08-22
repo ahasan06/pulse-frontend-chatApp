@@ -144,7 +144,7 @@ export function MembersPanel({
   }
 
   return (
-    <aside className="flex h-full w-full min-w-0 flex-col border-r border-slate-200 bg-white md:w-80 lg:w-[22rem] xl:w-[380px] dark:border-slate-800 dark:bg-slate-950">
+    <aside className="flex h-full w-full min-w-0 flex-col border-r border-slate-200 bg-white md:w-80 lg:w-[22rem] xl:w-[380px] dark:border-mz-border dark:bg-mz-page">
       <MobileListHeader
         onViewChange={onViewChange}
         onOpenNav={onOpenNav}

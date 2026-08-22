@@ -30,7 +30,7 @@ export function SideNav({ view, onViewChange, onClose }: SideNavProps) {
   const logout = useAuthStore((state) => state.logout)
 
   return (
-    <nav className="relative z-20 flex h-full w-60 max-w-[min(15rem,85vw)] shrink-0 flex-col overflow-visible bg-[#0b1426] px-3 py-4">
+    <nav className="relative z-20 flex h-full w-60 max-w-[min(15rem,85vw)] shrink-0 flex-col overflow-visible bg-mz-page px-3 py-4">
       <div className="mb-8 flex items-center justify-between gap-2 px-1">
         <BrandMark variant="sidebar" className="px-1" />
         <div className="flex shrink-0 items-center gap-0.5">
@@ -90,7 +90,7 @@ export function SideNav({ view, onViewChange, onClose }: SideNavProps) {
           <div className="flex items-center gap-2.5 px-2 py-1">
             <span className="relative shrink-0">
               <Avatar name={user.name} size="sm" />
-              <span className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2 border-[#0b1426] bg-emerald-400" />
+              <span className="absolute right-0 bottom-0 h-2.5 w-2.5 rounded-full border-2 border-mz-page bg-emerald-400" />
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-white">{user.name}</p>
@@ -127,7 +127,7 @@ function NavItem({
       className={cn(
         'flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left text-sm font-medium transition',
         active
-          ? 'bg-blue-600 text-white'
+          ? 'bg-mz-accent text-white'
           : 'text-white/90 hover:bg-white/10',
       )}
     >

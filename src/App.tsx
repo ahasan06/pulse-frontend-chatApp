@@ -25,7 +25,7 @@ function SessionGate({ children }: { children: ReactNode }) {
 
   if (status !== 'ready') {
     return (
-      <div className="flex min-h-svh items-center justify-center bg-slate-50 text-sm text-slate-500 dark:bg-slate-950">
+      <div className="flex min-h-svh items-center justify-center bg-[#eef0f8] text-sm text-mz-muted dark:bg-mz-page">
         Restoring session…
       </div>
     )

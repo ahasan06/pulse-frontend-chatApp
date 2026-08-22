@@ -2,7 +2,7 @@ import { cn } from '../../lib/cn'
 import { getInitials } from '../../lib/conversation'
 
 const AVATAR_COLORS = [
-  'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-200',
+  'bg-mz-out text-mz-accent-deep dark:bg-mz-accent/20 dark:text-blue-200',
   'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-200',
   'bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-950 dark:text-fuchsia-200',
   'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-200',
