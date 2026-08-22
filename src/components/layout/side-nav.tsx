@@ -12,6 +12,7 @@ import { useAuthStore } from '../../store/auth-store'
 import { useThemeStore } from '../../store/theme-store'
 import { Avatar } from '../ui/avatar'
 import { Switch } from '../ui/switch'
+import { BrandMark } from './brand-mark'
 import { NotificationBell } from './notification-bell'
 
 export type SideNavView = 'chats' | 'groups' | 'members'
@@ -31,12 +32,7 @@ export function SideNav({ view, onViewChange, onClose }: SideNavProps) {
   return (
     <nav className="relative z-20 flex h-full w-60 max-w-[min(15rem,85vw)] shrink-0 flex-col overflow-visible bg-[#0b1426] px-3 py-4">
       <div className="mb-8 flex items-center justify-between gap-2 px-1">
-        <div className="flex min-w-0 items-center gap-2.5 px-1">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white">
-            <HiOutlineChatBubbleLeftRight className="h-5 w-5" />
-          </span>
-          <p className="text-lg font-semibold tracking-tight text-white">Pulse</p>
-        </div>
+        <BrandMark variant="sidebar" className="px-1" />
         <div className="flex shrink-0 items-center gap-0.5">
           <div className="hidden lg:block">
             <NotificationBell onOpenChat={() => onViewChange('chats')} />

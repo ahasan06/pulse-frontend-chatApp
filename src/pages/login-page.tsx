@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
 import { Navigate } from 'react-router-dom'
 import { Button } from '../components/ui/button'
 import { Field } from '../components/ui/field'
@@ -44,11 +43,13 @@ export function LoginPage() {
   return (
     <main className="flex min-h-svh items-center justify-center bg-slate-50 px-4 py-8 dark:bg-slate-950">
       <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 dark:border-slate-800 dark:bg-slate-900">
-        <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white">
-          <HiOutlineChatBubbleLeftRight className="h-6 w-6" />
-        </span>
+        <img
+          src="/favicon.png"
+          alt=""
+          className="h-11 w-11 object-contain"
+        />
         <h1 className="mt-4 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-          Sign in to Pulse
+          Sign in to Pulse | Chat
         </h1>
         <p className="mt-2 text-sm text-slate-500">
           Enter your phone and name. New numbers are registered automatically.

@@ -1,5 +1,6 @@
-import { HiBars3, HiOutlineChatBubbleLeftRight } from 'react-icons/hi2'
+import { HiBars3 } from 'react-icons/hi2'
 import { IconButton } from '../ui/icon-button'
+import { BrandMark } from './brand-mark'
 import { NotificationBell } from './notification-bell'
 import type { SideNavView } from './side-nav'
 
@@ -21,14 +22,7 @@ export function MobileListHeader({
       >
         <HiBars3 className="h-6 w-6" />
       </IconButton>
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white">
-          <HiOutlineChatBubbleLeftRight className="h-4 w-4" />
-        </span>
-        <p className="truncate text-lg font-semibold text-slate-900 dark:text-slate-100">
-          Pulse
-        </p>
-      </div>
+      <BrandMark className="min-w-0 flex-1" />
       <NotificationBell
         tone="onLight"
         onOpenChat={() => onViewChange('chats')}
