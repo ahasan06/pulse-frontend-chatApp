@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
-import { translateMessage } from '../_lib/refine-message'
-import { readJsonBody, sendJson } from '../_lib/http'
+import { translateMessage } from '../_lib/refine-message.ts'
+import { readJsonBody, sendJson } from '../_lib/http.ts'
 
 export const config = {
   maxDuration: 30,
