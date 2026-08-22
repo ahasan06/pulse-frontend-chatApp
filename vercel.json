@@ -3,7 +3,10 @@
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "functions": {
-    "api/ai/*.ts": {
+    "api/ai/refine.ts": {
+      "maxDuration": 30
+    },
+    "api/ai/translate.ts": {
       "maxDuration": 30
     }
   }

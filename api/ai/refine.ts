@@ -1,33 +1,38 @@
-import type { IncomingMessage, ServerResponse } from 'node:http'
-import { refineMessage } from '../_lib/refine-message.ts'
-import { readJsonBody, sendJson } from '../_lib/http.ts'
+import { refineMessage } from '../_lib/refine-message.js'
+import { readJsonBody, sendJson } from '../_lib/http.js'
 
 export const config = {
   maxDuration: 30,
 }
 
 export default async function handler(
-  req: IncomingMessage & { body?: unknown; method?: string },
-  res: ServerResponse,
+  req: { method?: string; body?: unknown; json?: () => Promise<unknown> },
+  res?: {
+    statusCode: number
+    setHeader?: (name: string, value: string) => void
+    end?: (body?: string) => void
+    status?: (code: number) => { json: (body: unknown) => unknown }
+  },
 ) {
   try {
     if (req.method === 'OPTIONS') {
-      res.statusCode = 204
-      res.end()
-      return
+      if (res?.end) {
+        res.statusCode = 204
+        res.end()
+        return
+      }
+      return new Response(null, { status: 204 })
     }
 
     if (req.method !== 'POST') {
-      sendJson(res, 405, { error: { message: 'Method not allowed' } })
-      return
+      return sendJson(res, 405, { error: { message: 'Method not allowed' } })
     }
 
     const apiKey = process.env.OPENROUTER_API_KEY
     if (!apiKey) {
-      sendJson(res, 503, {
+      return sendJson(res, 503, {
         error: { message: 'OPENROUTER_API_KEY is not configured on Vercel' },
       })
-      return
     }
 
     const body = await readJsonBody(req)
@@ -36,12 +41,10 @@ export default async function handler(
     const grammarRefine = Boolean(body.grammarRefine)
 
     if (!text) {
-      sendJson(res, 400, { error: { message: 'Enter a message first' } })
-      return
+      return sendJson(res, 400, { error: { message: 'Enter a message first' } })
     }
     if (!banglaToEnglish && !grammarRefine) {
-      sendJson(res, 400, { error: { message: 'Enable at least one AI mode' } })
-      return
+      return sendJson(res, 400, { error: { message: 'Enable at least one AI mode' } })
     }
 
     const refined = await refineMessage(apiKey, {
@@ -49,9 +52,9 @@ export default async function handler(
       banglaToEnglish,
       grammarRefine,
     })
-    sendJson(res, 200, { text: refined })
+    return sendJson(res, 200, { text: refined })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'AI request failed'
-    sendJson(res, 502, { error: { message } })
+    return sendJson(res, 502, { error: { message } })
   }
 }
