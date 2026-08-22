@@ -3,6 +3,30 @@ export type RefineModes = {
   grammarRefine: boolean
 }
 
+type AiResponse = {
+  text?: string
+  error?: { message?: string }
+}
+
+async function readAiResponse(response: Response, fallback: string) {
+  const raw = await response.text()
+  let data: AiResponse = {}
+
+  if (raw) {
+    try {
+      data = JSON.parse(raw) as AiResponse
+    } catch {
+      throw new Error(raw.slice(0, 160) || fallback)
+    }
+  }
+
+  if (!response.ok || !data.text) {
+    throw new Error(data.error?.message || fallback)
+  }
+
+  return data.text
+}
+
 export async function refineDraft(text: string, modes: RefineModes) {
   const response = await fetch('/api/ai/refine', {
     method: 'POST',
@@ -15,16 +39,7 @@ export async function refineDraft(text: string, modes: RefineModes) {
     }),
   })
 
-  const data = (await response.json()) as {
-    text?: string
-    error?: { message?: string }
-  }
-
-  if (!response.ok || !data.text) {
-    throw new Error(data.error?.message || 'AI could not refine this message')
-  }
-
-  return data.text
+  return readAiResponse(response, 'AI could not refine this message')
 }
 
 export type TranslateTarget = 'english' | 'bangla'
@@ -37,14 +52,5 @@ export async function translateForReading(text: string, target: TranslateTarget)
     body: JSON.stringify({ text, target }),
   })
 
-  const data = (await response.json()) as {
-    text?: string
-    error?: { message?: string }
-  }
-
-  if (!response.ok || !data.text) {
-    throw new Error(data.error?.message || 'AI could not translate this message')
-  }
-
-  return data.text
+  return readAiResponse(response, 'AI could not translate this message')
 }

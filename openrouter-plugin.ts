@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Connect, Plugin } from 'vite'
-import { refineMessage, translateMessage } from './server/refine-message.ts'
+import { refineMessage, translateMessage } from './api/_lib/refine-message.ts'
 
 function readBody(req: IncomingMessage) {
   return new Promise<string>((resolve, reject) => {

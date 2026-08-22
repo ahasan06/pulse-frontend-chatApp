@@ -84,7 +84,9 @@ async function requestCompletion(
     headers: {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://pulse-chat.local',
+      'HTTP-Referer': process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : 'https://pulse-frontend-chat-app.vercel.app',
       'X-Title': 'Pulse Chat',
     },
     body: JSON.stringify({
