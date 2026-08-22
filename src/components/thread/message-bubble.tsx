@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { HiExclamationCircle, HiOutlineClock, HiOutlineSparkles } from 'react-icons/hi2'
 import { IoCheckmarkDone } from 'react-icons/io5'
 import { translateForReading, type TranslateTarget } from '../../lib/ai-refine'
@@ -72,6 +73,8 @@ export function MessageBubble({
   const [viewLang, setViewLang] = useState<TranslateTarget | null>(null)
   const [translated, setTranslated] = useState('')
   const [error, setError] = useState('')
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 })
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -83,13 +86,42 @@ export function MessageBubble({
 
   useEffect(() => {
     function onPointerDown(event: PointerEvent) {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setMenuOpen(false)
+      const target = event.target as Node
+      if (buttonRef.current?.contains(target) || menuRef.current?.contains(target)) {
+        return
       }
+      setMenuOpen(false)
     }
     window.addEventListener('pointerdown', onPointerDown)
     return () => window.removeEventListener('pointerdown', onPointerDown)
   }, [])
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function onScroll() {
+      setMenuOpen(false)
+    }
+    window.addEventListener('scroll', onScroll, true)
+    return () => window.removeEventListener('scroll', onScroll, true)
+  }, [menuOpen])
+
+  useLayoutEffect(() => {
+    if (!menuOpen || !buttonRef.current || !menuRef.current) return
+
+    const button = buttonRef.current.getBoundingClientRect()
+    const menu = menuRef.current.getBoundingClientRect()
+    const padding = 8
+    const gap = 8
+    const openBelow = button.top < menu.height + gap + padding
+
+    let top = openBelow ? button.bottom + gap : button.top - menu.height - gap
+    top = Math.max(padding, Math.min(top, window.innerHeight - menu.height - padding))
+
+    let left = mine ? button.right - menu.width : button.left
+    left = Math.max(padding, Math.min(left, window.innerWidth - menu.width - padding))
+
+    setMenuPos({ top, left })
+  }, [menuOpen, mine, viewLang])
 
   async function translate(target: TranslateTarget) {
     setMenuOpen(false)
@@ -110,8 +142,9 @@ export function MessageBubble({
   const canTranslate = Boolean(message.text.trim()) && message.status !== 'pending'
 
   const sparkleControl = canTranslate ? (
-    <div ref={menuRef} className="relative shrink-0 self-center">
+    <div className="relative shrink-0 self-center">
       <button
+        ref={buttonRef}
         type="button"
         className={cn(
           'inline-flex h-8 w-8 items-center justify-center text-indigo-500 transition hover:text-indigo-600 dark:text-indigo-300',
@@ -129,42 +162,44 @@ export function MessageBubble({
           <HiOutlineSparkles className="h-4 w-4" />
         )}
       </button>
-      {menuOpen ? (
-        <div
-          className={cn(
-            'absolute z-20 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900',
-            mine ? 'right-0 bottom-10' : 'left-0 bottom-10',
-          )}
-        >
-          <button
-            type="button"
-            className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
-            onClick={() => void translate('english')}
-          >
-            Translate to English
-          </button>
-          <button
-            type="button"
-            className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
-            onClick={() => void translate('bangla')}
-          >
-            Translate to Bangla
-          </button>
-          {viewLang ? (
-            <button
-              type="button"
-              className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
-              onClick={() => {
-                setViewLang(null)
-                setTranslated('')
-                setMenuOpen(false)
-              }}
+      {menuOpen
+        ? createPortal(
+            <div
+              ref={menuRef}
+              style={{ top: menuPos.top, left: menuPos.left }}
+              className="fixed z-50 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-700 dark:bg-slate-900"
             >
-              Show original
-            </button>
-          ) : null}
-        </div>
-      ) : null}
+              <button
+                type="button"
+                className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                onClick={() => void translate('english')}
+              >
+                Translate to English
+              </button>
+              <button
+                type="button"
+                className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                onClick={() => void translate('bangla')}
+              >
+                Translate to Bangla
+              </button>
+              {viewLang ? (
+                <button
+                  type="button"
+                  className="flex w-full px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                  onClick={() => {
+                    setViewLang(null)
+                    setTranslated('')
+                    setMenuOpen(false)
+                  }}
+                >
+                  Show original
+                </button>
+              ) : null}
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   ) : null
 
