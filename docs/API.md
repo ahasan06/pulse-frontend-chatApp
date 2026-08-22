@@ -8,6 +8,77 @@ Official spec: [https://frontend-task-chatapp.onrender.com/docs/](https://fronte
 
 ---
 
+## Pulse client — what this app uses
+
+Coverage for the [pulse-frontend-chatApp](https://github.com/ahasan06/pulse-frontend-chatApp) implementation. “Wrapped” means the method exists in `src/lib/api.ts` but nothing in the UI calls it yet.
+
+### REST endpoints
+
+| Endpoint | Used | Where / notes |
+| --- | --- | --- |
+| `POST /auth/login` | **Yes** | Login page → `auth-store.login()` |
+| `GET /auth/me` | **Yes** | Session restore on app load → `auth-store.restoreSession()` |
+| `GET /users/search?q=` | **Yes** | Start chat, add members, `useUserSearch` (debounced, multi-variant name search) |
+| `GET /users/search` (no `q`) | **Yes** | All members directory → `chatApi.listUsers()` in `members-directory.ts` |
+| `GET /conversations` | **Yes** | Inbox list → `chat-store.loadConversations()` |
+| `POST /conversations` | **Yes** | Start / open direct chat → `chat-store.startDirectChat()` |
+| `POST /conversations/group` | **Yes** | New group dialog → `chat-store.createGroupChat()` |
+| `POST /conversations/{id}/participants` | **Yes** | Add group members → `chat-store.addGroupMembers()` |
+| `DELETE /conversations/{id}/participants/{userId}` | **Yes** | Admin removes member, or member leaves (self id) → `removeGroupMember()` / `leaveGroup()` |
+| `POST /conversations/{id}/admins` | **No** | Wrapped as `chatApi.promoteAdmin()` — admins are **displayed** in the members dialog but never promoted via API |
+| `PATCH /conversations/{id}` | **No** | Wrapped as `chatApi.renameGroup()` — no rename UI |
+| `GET /conversations/{id}/messages` | **Yes** | Thread history; `limit: 20`, `before` cursor when `hasMore` is true |
+| `POST /messages` | **Yes** | Message composer; optimistic pending message, retry on failure |
+| `GET /health` | **No** | Not used — chat app does not need a liveness probe |
+
+### Socket.io
+
+| Piece | Used | Notes |
+| --- | --- | --- |
+| Connect with `auth: { token }` | **Yes** | `use-chat-socket.ts` on chat page when logged in |
+| `message:new` (server → client) | **Yes** | Incoming messages; `normalizeMessage()` then `applyIncomingMessage()` |
+| `conversation:updated` (server → client) | **Yes** | Triggers inbox refresh after group create / member changes |
+| `message:send` (client → server) | **No** | Outbound messages go through REST `POST /messages` only |
+
+### Auth & headers
+
+| Piece | Used | Notes |
+| --- | --- | --- |
+| `Authorization: Bearer <token>` on REST | **Yes** | Axios request interceptor in `api.ts` |
+| JWT in socket handshake `auth` | **Yes** | Passed when connecting in `use-chat-socket.ts` |
+| 401 → clear token + logout | **Yes** | Response interceptor dispatches `auth:unauthorized` |
+
+### Documented quirks — handled in this app?
+
+| Quirk | Handled | How |
+| --- | --- | --- |
+| Existing phone ignores new `name` on login | **Yes** | Auth store saves `user` from login/me response, not the form |
+| `/api/health` 404 vs `/health` 200 | **N/A** | Health endpoint not called |
+| Inconsistent envelopes (`data` vs array vs object) | **Yes** | Separate types per route in `types/api.ts`; no generic wrapper |
+| Direct `participant` vs group `participants` | **Yes** | Discriminated on `conversation.type`; helpers in `lib/conversation.ts` |
+| Empty `lastMessage: {}` | **Yes** | `isLastMessagePreview()` before preview / timestamp |
+| Search returns current user | **Yes** | `excludeCurrentUser()` in search and members panel |
+| No-`q` search returns ~50 users | **Yes** | Powers the globe “All members” view |
+| Create direct returns id strings; list returns populated users | **Yes** | Reload conversations after create; title from list payload |
+| Socket `id` + epoch ms vs REST `_id` + ISO | **Yes** | `normalizeMessage()` in `lib/message.ts` |
+| REST send + socket both deliver same message | **Yes** | De-dupe by `_id` in `chat-store.sendMessage()` |
+| Empty / whitespace messages | **Yes** | Blocked client-side via Zod `messageSchema` before API call |
+| Group admin rules (add/remove/leave) | **Partial** | Add, remove, leave implemented; promote admin and rename **not** wired to UI |
+
+### Assignment features → API mapping
+
+| Feature | API used |
+| --- | --- |
+| Login (phone + name, auto-register) | `POST /auth/login`, `GET /auth/me` |
+| Search & start conversation | `GET /users/search?q=`, `POST /conversations` |
+| Group conversations | `POST /conversations/group`, participant add/remove/delete |
+| Message list + timestamps | `GET /conversations/{id}/messages`, sender id vs `auth.user._id` |
+| Send messages | `POST /messages` |
+| Real-time updates | Socket `message:new`, `conversation:updated` |
+| Load older messages | `GET .../messages?before=<id>` while `hasMore` |
+
+---
+
 ## Base URLs
 
 | Service | URL | Notes |
